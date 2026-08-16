@@ -1,0 +1,47 @@
+# Environments & Secrets
+.env
+*.env
+.venv/
+venv/
+ENV/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Large Datasets & Storage Volumes
+data/
+volumes/
+kaggle_dataset_staging/
+
+# Model Weights & Binaries
+model/
+*.pt
+*.pth
+*.bin
+*.onnx
+*.safetensors
+*.ckpt
+*.weights
+
+# PDFs & Documents
+*.pdf
+docs/
+.scratch/
+.agents/
+.gemini/
+
+# Internal task / notes markdown files (excluding README.md)
+AGENTS.md
+CONTEXT.md
+implementation_plan.md
+walkthrough.md
+workspace_guide.md
+
+# IDE / OS Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

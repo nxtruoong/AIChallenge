@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIHCM Video Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">🔍 AIHCM Search</div>
+            <div class="toggle-container">
+                <button id="btn-challenge" class="toggle-btn active">Challenge Mode</button>
+                <button id="btn-test" class="toggle-btn">Test Dashboard</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Challenge Mode View -->
+            <section id="challenge-view" class="view active">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Describe the clip you want to find..." autofocus>
+                    <button id="search-btn">Search</button>
+                </div>
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Searching through videos...</p>
+                </div>
+                <div id="results-sections" class="hidden">
+                    <h3 style="color:var(--primary); margin-top: 1rem;">Fused Results (RRF)</h3>
+                    <div id="results-fused" class="results-grid"></div>
+                    
+                    <h3 style="color:var(--primary); margin-top: 1.5rem;">Visual Search (SigLIP-SO400M)</h3>
+                    <div id="results-visual" class="results-grid"></div>
+                    
+                    <h3 style="color:var(--primary); margin-top: 1.5rem;">Text Search (BGE-m3)</h3>
+                    <div id="results-text" class="results-grid"></div>
+                </div>
+            </section>
+
+            <!-- Test Dashboard View -->
+            <section id="test-view" class="view hidden">
+                <div class="dashboard-header">
+                    <h2>Evaluation Results</h2>
+                    <button id="refresh-eval-btn">Refresh Data</button>
+                </div>
+                <div id="eval-metrics" class="metrics-container">
+                    <!-- Metrics will be injected here -->
+                </div>
+                <div class="table-container">
+                    <table id="eval-table">
+                        <thead>
+                            <tr>
+                                <th>Query</th>
+                                <th>True Video</th>
+                                <th>True PTS</th>
+                                <th>Match Rank</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eval-table-body">
+                            <!-- Rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="/static/app.js?v=2"></script>
+</body>
+</html>

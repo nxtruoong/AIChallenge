@@ -1,0 +1,618 @@
+[
+  {
+    "query": "The chef begins by placing a pot of water on the stove, preparing it for boiling. He then adds a mixture of ingredients into a bowl, including a whole lobster, chopped green onions, minced garlic, and a pinch of salt. The chef explains that he will use the pot of boiling water to cook the lobster, ensuring it is cooked properly.",
+    "answer": {
+      "video_name": "L26_V100",
+      "start_time": 87.22,
+      "end_time": 104.68
+    }
+  },
+  {
+    "query": "The chef begins by adding a sauce to the pan, followed by meat and then a liquid ingredient. He explains that the meat should be cooked until it is just done, then he adds a portion of the Ajinomoto seasoning and some chopped garlic. The meat is then placed on a grill to finish cooking.",
+    "answer": {
+      "video_name": "L26_V101",
+      "start_time": 192.73,
+      "end_time": 218.05
+    }
+  },
+  {
+    "query": "The video shows a person preparing a dish using Banh Ran, a type of Vietnamese pancake. The person starts by pouring the Banh Ran mix into a bowl, followed by adding water according to the recipe instructions. They then heat a pan over medium heat and place it on a damp cloth to prevent sticking. After heating the pan, they add the mixture to the pan and cook it until it's ready.",
+    "answer": {
+      "video_name": "L26_V102",
+      "start_time": 175.93,
+      "end_time": 203.83
+    }
+  },
+  {
+    "query": "The video shows a chef preparing a dish by wrapping a mixture of ingredients in a leaf, likely for a spring roll or similar dish. The chef then explains that when steaming the wrapped item, it will look more appetizing. He mentions using a leaf from a green vegetable, possibly cabbage, and continues to explain the process of making the dish. The chef also demonstrates how to steam the wrapped item, emphasizing the importance of proper steaming time, which is approximately 10-15 minutes.",
+    "answer": {
+      "video_name": "L26_V103",
+      "start_time": 179.95,
+      "end_time": 197.87
+    }
+  },
+  {
+    "query": "In the video, the chef begins by whisking eggs in a bowl, preparing the base for the dish. The woman then adds a mixture of ingredients into the bowl, likely including seasonings and possibly some vegetables or protein. The chef proceeds to mix everything together thoroughly, ensuring all components are well combined.",
+    "answer": {
+      "video_name": "L26_V104",
+      "start_time": 136.58,
+      "end_time": 154.08
+    }
+  },
+  {
+    "query": "The chef is adding spices to a bowl, including Ajinomoto seasoning, which is mentioned as being added to the mixture. The presenter explains that the spices should be added to the mixture to enhance its flavor without overpowering it. He also mentions that the amount of Ajinomoto used should be around 20%, but the exact quantity is not specified.",
+    "answer": {
+      "video_name": "L26_V105",
+      "start_time": 110.9,
+      "end_time": 126.98
+    }
+  },
+  {
+    "query": "The video shows a cooking tutorial where the presenter is preparing a dish by first chopping green onions and white garlic. Then, they are shown mixing these chopped ingredients with fish sauce and other seasonings. The next step involves placing the mixed ingredients into a pan of hot oil for frying. Throughout the process, the presenter explains the importance of ensuring that the fish sauce is well-distributed among the ingredients to enhance the flavor of the dish.",
+    "answer": {
+      "video_name": "L26_V106",
+      "start_time": 89.18,
+      "end_time": 110.64
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the chef adds a small amount of salt to the pot, followed by a pinch of sugar. The chef then pours a small amount of water into the pot, which is likely meant to adjust the seasoning balance. Finally, the chef explains that adding a small amount of salt and sugar can help enhance the flavor of the dish without overpowering it.",
+    "answer": {
+      "video_name": "L26_V107",
+      "start_time": 189.21,
+      "end_time": 208.29
+    }
+  },
+  {
+    "query": "In the video, the chef pours mayonnaise into a bowl, followed by adding three scoops of Ajimayo mayonnaise. Then, they add 1 teaspoon of unsweetened yogurt, 1 teaspoon of condensed milk, and 1 teaspoon of toasted sesame seeds. The chef explains that these ingredients will be used to create a sauce for dipping fried food.",
+    "answer": {
+      "video_name": "L26_V108",
+      "start_time": 119.52,
+      "end_time": 142.95
+    }
+  },
+  {
+    "query": "In the kitchen, the chef carefully adds a green leafy vegetable into a pot, likely preparing a dish that requires fresh greens. The chef then explains the importance of incorporating soil-rich ingredients like shrimp and crab into the recipe, emphasizing the nutritional benefits and traditional practices.",
+    "answer": {
+      "video_name": "L26_V109",
+      "start_time": 170.52,
+      "end_time": 196.68
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the chef is preparing a dish that requires a variety of ingredients. The chef starts by adding salt to a pan containing chicken pieces, followed by stirring in vegetables such as bell peppers and onions. The chef then pours a liquid into the pan, likely a sauce or broth, and continues to stir the mixture. Throughout the process, the chef explains the importance of adding different ingredients to ensure a balanced and flavorful dish.",
+    "answer": {
+      "video_name": "L26_V110",
+      "start_time": 173.26,
+      "end_time": 192.41
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the chef is preparing a dish using ravioli. The chef starts by placing the ravioli into a bowl filled with a creamy sauce. He then uses a spoon to mix the ravioli with the sauce, ensuring they are evenly coated. The chef explains that the dish can be easily made at home without the need for a special oven, as the recipe is available through a QR code scan. He also mentions that the dish is delicious and encourages viewers to try it out.",
+    "answer": {
+      "video_name": "L26_V111",
+      "start_time": 202.76,
+      "end_time": 229.92
+    }
+  },
+  {
+    "query": "The video shows a person preparing a dish by mixing ingredients in a white bowl. They start by pouring a spoon of Phu Si soy sauce into the bowl. Next, they add ground black pepper, followed by a dash of cooking oil. They then add 1 tablespoon of pork seasoning powder. Finally, they finish by adding 1 tablespoon of minced shallots and garlic",
+    "answer": {
+      "video_name": "L26_V112",
+      "start_time": 75.45,
+      "end_time": 95.7
+    }
+  },
+  {
+    "query": "The video shows a person mixing ingredients in a bowl, starting with a packet of instant noodles. They then add water to the mixture, followed by a package of instant noodles. The person explains that they will mix everything together to create a noodle filling for a dish.",
+    "answer": {
+      "video_name": "L26_V113",
+      "start_time": 154.33,
+      "end_time": 179.39
+    }
+  },
+  {
+    "query": "In this cooking segment, the presenter is explaining how to enhance the flavor of a dish by adding the zest of a mandarin orange. The presenter mentions that cream cheese contains Vitamin A and other nutrients beneficial for vision health.",
+    "answer": {
+      "video_name": "L26_V114",
+      "start_time": 103.69,
+      "end_time": 115.98
+    }
+  },
+  {
+    "query": "The video begins with a close-up shot of a dish being prepared, highlighting the vibrant colors and textures of the ingredients. The camera then pans out to reveal a chef standing in front of a kitchen counter, wearing a white apron. He is holding a package of Ajinomoto seasoning and begins to explain its benefits. The chef emphasizes that the tangy flavor of vinegar and fruits will help maintain freshness throughout the day. He then proceeds to demonstrate how to use the seasoning in a recipe, providing tips on how to achieve the best results.",
+    "answer": {
+      "video_name": "L26_V115",
+      "start_time": 222.14,
+      "end_time": 236.69
+    }
+  },
+  {
+    "query": "The video shows a chef preparing a dish by cutting a piece of cabbage into smaller pieces. The chef explains that they will use a variety of vegetables to enhance the flavor of the dish.",
+    "answer": {
+      "video_name": "L26_V116",
+      "start_time": 87.37,
+      "end_time": 103.82
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the host explains the process of making a dish involving pork and soy sauce. The host starts by adding half of the soy sauce and half of the salt to the pot, then adds a small amount of sugar. The host then explains that they will cook the pork for about 10 minutes before adding the soy sauce and sugar mixture. The host emphasizes that the pork should be cooked for approximately 25 minutes to ensure it is tender and flavorful.",
+    "answer": {
+      "video_name": "L26_V117",
+      "start_time": 207.49,
+      "end_time": 230.65
+    }
+  },
+  {
+    "query": "In the cooking segment, the chef and his assistant are preparing a dish that involves frying ingredients in a pan. The chef is seen stirring the contents of the pan with a spatula, while the assistant stands beside him, observing the process. The kitchen setting is well-lit and organized, with various cooking utensils and ingredients visible on the counter. The chef explains the cooking process, emphasizing the importance of the timing and technique required for the dish.",
+    "answer": {
+      "video_name": "L26_V118",
+      "start_time": 198.06,
+      "end_time": 209.98
+    }
+  },
+  {
+    "query": "The video shows a chef preparing a dish by adding chicken pieces into a pot. The chef uses chopsticks to stir the chicken in the pot, ensuring it cooks evenly. The chef then explains that the chicken should be cooked until it is tender and not overcooked.",
+    "answer": {
+      "video_name": "L26_V119",
+      "start_time": 137.8,
+      "end_time": 149.56
+    }
+  },
+  {
+    "query": "The video shows a person cutting yellow bell peppers into thin strips on a wooden cutting board. The person then arranges the sliced peppers on a plate alongside other vegetables. The video continues with the preparation of the bell peppers, emphasizing the process of cutting them into thin strips for easy consumption.",
+    "answer": {
+      "video_name": "L26_V120",
+      "start_time": 83.13,
+      "end_time": 93.8
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the chef prepares a dish in a bowl. First, they use a spoon and a pair of chopsticks to mix all the ingredients inside thoroughly. Next, the chef adds a packet of Aji-Quick crispy coating flour into the bowl. Finally, they give the bowl a good shake to coat everything evenly.",
+    "answer": {
+      "video_name": "L26_V121",
+      "start_time": 97.92,
+      "end_time": 122.78
+    }
+  },
+  {
+    "query": "The video begins with a close-up of a hand wearing gloves using a knife to slice a package of ham into small cubes. The camera then shifts to show a person in a kitchen setting, preparing ingredients for a recipe. The individual is seen cutting vegetables and handling various kitchen tools and utensils. The scene emphasizes the preparation process, focusing on the detailed steps involved in preparing the ingredients.",
+    "answer": {
+      "video_name": "L26_V122",
+      "start_time": 71.08,
+      "end_time": 84.09
+    }
+  },
+  {
+    "query": "In the cooking segment, the chef and the host are preparing a dish that involves octopus. The chef is seen adding this ingredient to a bowl, which is likely part of the recipe's preparation process. The host is observing and possibly providing commentary on the cooking technique. The focus seems to be on ensuring that the dish is cooked properly without any unwanted colors or textures, emphasizing the importance of cleanliness and precision in the cooking process.",
+    "answer": {
+      "video_name": "L26_V123",
+      "start_time": 117.27,
+      "end_time": 132.03
+    }
+  },
+  {
+    "query": "The video opens with a close-up of someone placing a bite-sized piece of ingredient into a bowl. The camera then cuts to a home cook wearing a \"Món Ngon\" apron in her kitchen, getting ready to prepare a dish. Next, a close-up shot shows a hand stirring a steaming pot on the stove. The scene then transitions back to the cook at her kitchen counter, surrounded by fresh ingredients and cooking utensils, as she walks through the steps of the recipe",
+    "answer": {
+      "video_name": "L26_V124",
+      "start_time": 149.0,
+      "end_time": 177.85
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the host and chef are preparing a dish. The host is seen adding ingredients to a bowl, including mayonnaise and chilli sauce, which is then mixed with other components to create a sauce.",
+    "answer": {
+      "video_name": "L26_V125",
+      "start_time": 212.12,
+      "end_time": 239.39
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the host is preparing a dish. The host is seen adding ingredients such as rice vinegar, salt, sugar, and pepper into a bowl. The host then proceeds to mix the ingredients together.",
+    "answer": {
+      "video_name": "L26_V126",
+      "start_time": 138.17,
+      "end_time": 165.3
+    }
+  },
+  {
+    "query": "The video begins with a close-up of a person stirring a pan filled with sliced lotus root and other ingredients. The camera then shifts to show two individuals standing in a kitchen, one wearing a chef's coat and the other in an apron. The chef gestures while speaking, likely explaining the cooking process. The scene transitions to a wider shot of the kitchen, where the individuals stand behind a counter with various ingredients and utensils. The chef continues to explain the recipe, emphasizing the importance of allowing the dish to simmer for five minutes to ensure it reaches the desired flavor and texture.",
+    "answer": {
+      "video_name": "L26_V127",
+      "start_time": 199.3,
+      "end_time": 211.38
+    }
+  },
+  {
+    "query": "The video shows a cooking process where onions are being sautéed in oil, followed by the addition of garlic and chili paste. The chef then pours a red sauce into the pan, which appears to be a tomato-based mixture. The final step involves adding water from a previous cooking session to the pan, indicating that the dish is being prepared with multiple components.",
+    "answer": {
+      "video_name": "L26_V128",
+      "start_time": 127.51,
+      "end_time": 140.38
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the chef is preparing a dish that involves frying ingredients in oil. The chef is seen adding ingredients such as onions and garlic into a pan with oil. The chef then adds a spice mixture to the pan, which includes red chili powder and other spices. The chef is also seen adding a liquid ingredient, likely a sauce or broth, to the pan. The chef is wearing an apron and is standing in front of a kitchen counter with various cooking utensils and ingredients visible. The chef is using a spatula to stir the ingredients in the pan. The chef is also seen adding a spice mixture to the pan, which includes red chili powder and other spices. The chef is also seen adding a liquid ingredient, likely a sauce or broth, to the pan. The",
+    "answer": {
+      "video_name": "L26_V129",
+      "start_time": 192.01,
+      "end_time": 208.69
+    }
+  },
+  {
+    "query": "The video shows a cooking tutorial where the chef is preparing a dish involving dough and sauce. The chef is seen spreading a yellow sauce onto rectangular pieces of dough laid out on a baking sheet. The chef then explains that after adding the sauce, the dough should be placed in a tray with water to prevent it from sticking. The chef emphasizes the importance of ensuring the dough is evenly coated with the sauce before placing it in the tray.",
+    "answer": {
+      "video_name": "L26_V130",
+      "start_time": 95.07,
+      "end_time": 109.19
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the host explains the process of making a chocolate \"Bánh rán\"/ The host emphasizes that while the recipe may seem simple, it requires precise techniques to achieve the perfect texture and flavor. To ensure authenticity, viewers are encouraged to follow the recipe as demonstrated by the host.",
+    "answer": {
+      "video_name": "L26_V131",
+      "start_time": 212.2,
+      "end_time": 229.98
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the host is preparing a dish involving beef. The host is seen cutting beef into thin slices on a wooden chopping board. The beef is then mixed with other ingredients, including red chili peppers and possibly some spices or seasonings. The host explains that the beef is a rich source of protein and nutrients, and when combined with chili peppers, it enhances the flavor profile of the dish. The video emphasizes the nutritional benefits of the beef and chili peppers, highlighting their high content of vitamins and minerals.",
+    "answer": {
+      "video_name": "L26_V132",
+      "start_time": 91.46,
+      "end_time": 110.51
+    }
+  },
+  {
+    "query": "The presenter is adding minced garlic, minced ginger, and chopped green onions into a bowl. They also mention that they will use small pieces of fresh herbs, which they will cut and chop further before mixing them together. The final ingredient added is Ajinomoto seasoning, followed by sugar and soy sauce.",
+    "answer": {
+      "video_name": "L26_V133",
+      "start_time": 114.57,
+      "end_time": 142.45
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where garlic cloves are being sautéed in oil in a frying pan. The presenter explains that the garlic will be used to add flavor to the dish, emphasizing the importance of using a whole garlic clove for a more pronounced taste.",
+    "answer": {
+      "video_name": "L26_V134",
+      "start_time": 159.14,
+      "end_time": 180.34
+    }
+  },
+  {
+    "query": "The presenter is explaining that they will use peanuts as a proof of concept to enhance the aroma of fried egg during the cooking process. They emphasize the importance of stirring while keeping an eye on the consistency of the dish. The next step involves adding ice, which is a crucial part of the recipe being demonstrated.",
+    "answer": {
+      "video_name": "L26_V135",
+      "start_time": 177.76,
+      "end_time": 201.98
+    }
+  },
+  {
+    "query": "The person in the video crush the green peppercorns, then add them into the pot along with the carrots, shiitake mushrooms, and water chestnuts.",
+    "answer": {
+      "video_name": "L26_V136",
+      "start_time": 63.58,
+      "end_time": 79.22
+    }
+  },
+  {
+    "query": "The presenter explains that to prepare the chicken, it should be rinsed clean and then soaked in a cup of salt water for about 30 minutes. This soaking process helps to clean the chicken and enhances its flavor.",
+    "answer": {
+      "video_name": "L26_V137",
+      "start_time": 63.4,
+      "end_time": 89.56
+    }
+  },
+  {
+    "query": "The chef is adding a small amount of oil to the pan over high heat. The pan is placed on a gas stove with blue flames visible beneath it. The chef then adds a piece of garlic to the pan, which is already sizzling.",
+    "answer": {
+      "video_name": "L26_V138",
+      "start_time": 156.25,
+      "end_time": 168.33
+    }
+  },
+  {
+    "query": "The chef is adding two tablespoons of peanut oil sauce into the pot that has already heated up. Next, they will add 1.5 liters of fresh coconut milk to the pot. The chef explains that using coconut milk in the dish will make it sweeter compared to using water for the base broth.",
+    "answer": {
+      "video_name": "L26_V139",
+      "start_time": 201.75,
+      "end_time": 226.32
+    }
+  },
+  {
+    "query": "In the cooking demonstration, the chef begins by adding oil to a pan, followed by a green leafy vegetable (Húng Lủi leaf). The speaker emphasizes the importance of not overcooking the vegetables before adding them to the fish, as this will enhance the dish's flavor. The chef then proceeds to add a seasoning mix to the pan, ensuring it is evenly distributed. Finally, the chef carefully places the seasoned vegetables into the pan with the fish, completing the preparation process.",
+    "answer": {
+      "video_name": "L26_V140",
+      "start_time": 105.24,
+      "end_time": 128.58
+    }
+  },
+  {
+    "query": "The chef is slicing a piece of grilled meat on a wooden cutting board, preparing it for the next step in the recipe. The sliced meat will be added to a salad that includes fresh greens and shredded carrots. The chef mentions that the salad will be garnished with mint leaves, which are known for their aromatic flavor.",
+    "answer": {
+      "video_name": "L26_V141",
+      "start_time": 189.71,
+      "end_time": 207.05
+    }
+  },
+  {
+    "query": "The chef is heating oil in a pan over a gas stove. Next, they add a piece of beef rib and some bok choy to the pan. The chef then adds a quarter cup of coffee beans to enhance the flavor. Finally, they quickly stir the bok choy to ensure it absorbs the flavors well.",
+    "answer": {
+      "video_name": "L26_V142",
+      "start_time": 171.74,
+      "end_time": 199.31
+    }
+  },
+  {
+    "query": "The presenter is discussing the nutritional benefits of certain ingredients, specifically mentioning Vitamin A and Vitamin D, which are rich in Omega. These ingredients are highlighted for their positive impact on the health of infants and their eyesight. The segment does not show any physical cooking actions but focuses on explaining the importance of these ingredients in the recipe.",
+    "answer": {
+      "video_name": "L26_V143",
+      "start_time": 199.98,
+      "end_time": 212.41
+    }
+  },
+  {
+    "query": "The person in the video is using a small metal cutter to remove the crusts and press out neat circular shapes from slices of bread on a wooden cutting board. They are preparing the bread for a dish that requires a visually appealing presentation. The trimmed bread slices will be used as part of a sandwich or a similar dish, with the clean, circular shapes adding an attractive design element.",
+    "answer": {
+      "video_name": "L26_V144",
+      "start_time": 79.27,
+      "end_time": 107.24
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the host is preparing a dish that involves cooking meatballs and vegetables in a pot of broth. The host explains that the meatballs should be cooked for about 2-3 minutes until they are just done and the broth has reduced slightly. The dish is noted for being rich in vitamin B12, which is important for health.",
+    "answer": {
+      "video_name": "L26_V145",
+      "start_time": 207.77,
+      "end_time": 226.98
+    }
+  },
+  {
+    "query": "In the video, the chef is preparing a dish by cutting carrots into thin strips and placing them in a bowl which already have chopped daikon. The chef then adds a small amount of salt and sugar to the carrot strips",
+    "answer": {
+      "video_name": "L26_V146",
+      "start_time": 189.73,
+      "end_time": 202.88
+    }
+  },
+  {
+    "query": "The video shows a cooking tutorial where the chef is preparing a dish by adding a mixture of ground meat and Lolot into a bowl.",
+    "answer": {
+      "video_name": "L26_V147",
+      "start_time": 110.62,
+      "end_time": 132.09
+    }
+  },
+  {
+    "query": "The presenter is instructing viewers to soak dried shrimp in warm water before adding them to the dish. They then suggest sautéing the shrimp with garlic and ginger to enhance their flavor. The next step involves placing the shrimp into a bowl while waiting for further instructions from the chef.",
+    "answer": {
+      "video_name": "L26_V148",
+      "start_time": 142.39,
+      "end_time": 162.46
+    }
+  },
+  {
+    "query": "The person in the video is chopping green vegetables on a wooden cutting board. They then proceed to cut crab sticks into small pieces. The presenter emphasizes the importance of ensuring that the ingredients are cooked properly.",
+    "answer": {
+      "video_name": "L26_V149",
+      "start_time": 100.52,
+      "end_time": 114.5
+    }
+  },
+  {
+    "query": "The chef uses flan as a topping, slicing it into a grid pattern before adding it.",
+    "answer": {
+      "video_name": "L26_V150",
+      "start_time": 166.22,
+      "end_time": 182.22
+    }
+  },
+  {
+    "query": "The chef carefully slices through the shrimp, revealing its tender flesh. He then proceeds to season the shrimp with a mixture of spices, ensuring an even coating. Finally, he places the seasoned shrimp onto a plate, ready for the next step in the recipe.",
+    "answer": {
+      "video_name": "L26_V151",
+      "start_time": 126.27,
+      "end_time": 137.91
+    }
+  },
+  {
+    "query": "The video shows a cooking tutorial where the chef is preparing a dish by finely chopping green onions and culantro. The chef then adds the chopped green onions and culantro into a bowl.",
+    "answer": {
+      "video_name": "L26_V152",
+      "start_time": 80.15,
+      "end_time": 92.67
+    }
+  },
+  {
+    "query": "The chef adds 1 tablespoon of minced shallots, minced garlic, and minced red pepper. Then, add 1 tablespoon of chopped green onions, 1/2 teaspoon of Ajinomoto MSG, and 1/2 teaspoon of sugar.",
+    "answer": {
+      "video_name": "L26_V153",
+      "start_time": 87.41,
+      "end_time": 106.45
+    }
+  },
+  {
+    "query": "The chef chops 1 bunch of dill and adds it to the bowl. Next, place a pot over medium heat and add oil. Then, add the thinly sliced shallots and garlic, followed by the tomatoes",
+    "answer": {
+      "video_name": "L26_V154",
+      "start_time": 118.42,
+      "end_time": 147.43
+    }
+  },
+  {
+    "query": "The chef add cooking oil to the pan, then add half of the minced shallots and the julienned galangal. Next, add all of the pickled mustard greens and stir-fry until fragrant.",
+    "answer": {
+      "video_name": "L26_V155",
+      "start_time": 139.73,
+      "end_time": 164.48
+    }
+  },
+  {
+    "query": "The video shows a cooking tutorial where the chef is preparing a sauce by mixing 4 tablespoons of mayonnaise, 1 tablespoon of rice vinegar, 2 tablespoons of olive oil, 1/2 teaspoon of salt, 1.5 teaspoons of sugar, 1 teaspoon of yellow mustard, and 1 teaspoon of grated orange zest.",
+    "answer": {
+      "video_name": "L26_V156",
+      "start_time": 91.83,
+      "end_time": 119.81
+    }
+  },
+  {
+    "query": "The video shows a cooking tutorial where the host is preparing a sauce by mixing various ingredients. The host starts by pouring water into a glass bowl, then adds sugar, rice vinegar, and Phu Si soy sauce. Next, they stir the mixture thoroughly to combine all the ingredients. Finally, they add hot sauce and chili paste to the bowl, continuing to mix until the sauce is well-blended.",
+    "answer": {
+      "video_name": "L26_V157",
+      "start_time": 142.81,
+      "end_time": 156.48
+    }
+  },
+  {
+    "query": "The presenter is explaining that the dish being prepared is a fried eel with a unique flavor. He emphasizes the importance of using small, tender eels for the best results. The presenter then mentions that they will cut the eels into pieces before cooking them.",
+    "answer": {
+      "video_name": "L26_V158",
+      "start_time": 62.76,
+      "end_time": 73.09
+    }
+  },
+  {
+    "query": "The chef is preparing a dish by adding a pinch of salt to a bowl of rice, followed by a small amount of sugar to balance the flavors. He then adds a pinch of pepper to enhance the taste. The chef explains that the dish will be made with a combination of rice, sugar, and pepper, emphasizing the importance of these ingredients in achieving the desired flavor profile.",
+    "answer": {
+      "video_name": "L26_V159",
+      "start_time": 119.31,
+      "end_time": 143.44
+    }
+  },
+  {
+    "query": "In the video, the chef and the host are preparing a dish that involves frying a mixture of ingredients. The chef is seen adding a mixture of sambal and other seasonings into a pan filled with hot oil. The host is also present, observing the process. The chef explains that they have prepared a mixture of sambal and other seasonings, which will be fried together. The host then adds the fried mixture to the pan, ensuring it is evenly distributed. The chef continues to stir the mixture as it cooks, ensuring it is cooked properly.",
+    "answer": {
+      "video_name": "L26_V160",
+      "start_time": 200.35,
+      "end_time": 221.46
+    }
+  },
+  {
+    "query": "The chef is preparing a dish by seasoning fish with salt and pepper. He then places the seasoned fish into a glass bowl. The presenter explains that the fish is rich in meat, flavorful, and high in omega-3 fatty acids, making it beneficial for overall health.",
+    "answer": {
+      "video_name": "L26_V161",
+      "start_time": 109.52,
+      "end_time": 126.95
+    }
+  },
+  {
+    "query": "In the cooking demonstration, the chef begins by adding a liquid ingredient into a pot containing a mixture of grains and vegetables. The chef then explains that the grains should be soaked twice to achieve a more vibrant color and improved texture. He emphasizes the importance of soaking the grains thoroughly to ensure they absorb enough water and develop their full flavor.",
+    "answer": {
+      "video_name": "L26_V162",
+      "start_time": 201.11,
+      "end_time": 217.98
+    }
+  },
+  {
+    "query": "In the video, the chef places a pan on the stove with about one tablespoon of oil. Once the oil is heated, they add the curry and fry it until it develops a fragrant aroma. The chef emphasizes that the curry should be fried in the leafy part of the plant, as previously mentioned in the program.",
+    "answer": {
+      "video_name": "L26_V163",
+      "start_time": 147.21,
+      "end_time": 159.95
+    }
+  },
+  {
+    "query": "The video shows a chef preparing a dish by cutting a chicken breast into thin slices using a sharp knife. The chef then places the sliced chicken into a pot of boiling water to cook it thoroughly. After cooking, the chicken is drained and placed on a plate.",
+    "answer": {
+      "video_name": "L26_V164",
+      "start_time": 77.7,
+      "end_time": 97.6
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where the presenter explains how to prepare a dish by first boiling water and then adding eggs to it. The presenter uses a pot with a lid to boil the water and then adds eggs to the pot. The video also includes a close-up shot of the eggs being cooked in the pot.",
+    "answer": {
+      "video_name": "L26_V165",
+      "start_time": 78.87,
+      "end_time": 99.11
+    }
+  },
+  {
+    "query": "The video shows a chef preparing a dish by adding spices to a bowl of meat. The chef then explains the importance of using Ajinomoto seasoning for the dish. Finally, the chef demonstrates how to add a pinch of salt to the meat.",
+    "answer": {
+      "video_name": "L26_V166",
+      "start_time": 91.71,
+      "end_time": 118.28
+    }
+  },
+  {
+    "query": "The video shows a person preparing a dish by placing a piece of ham on a plate with a sunflower-shaped decoration. The person then uses a spoon to spread a yellow substance, likely mustard, onto the ham. The scene transitions to a frying pan where a piece of ham is being cooked. The person then places a slice of pancake on top of the ham in the pan. Finally, the person adds a small amount of sauce to the dish.",
+    "answer": {
+      "video_name": "L26_V167",
+      "start_time": 192.75,
+      "end_time": 207.18
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where a chef is preparing a dish involving crab. The chef is seen placing a piece of meat into the clams, which are then being cooked. The chef explains that they will cook the clams for about 20 minutes until the clams open up. The chef also mentions that they will add a mixture of ingredients to the clams, including a seasoning mix and a type of bean. The chef emphasizes the importance of using the right amount of seasoning and the correct cooking time to achieve the best results.",
+    "answer": {
+      "video_name": "L26_V168",
+      "start_time": 194.53,
+      "end_time": 222.86
+    }
+  },
+  {
+    "query": "The video shows a cooking demonstration where a chef is preparing a dish. The chef starts by adding oil to a pan and then places a piece of fish into the hot oil. The chef explains that the fish should be cooked until it is just done, which will make it tender and flavorful. The chef also mentions that the fish should not be overcooked, as this would make it tough and less enjoyable to eat.",
+    "answer": {
+      "video_name": "L26_V169",
+      "start_time": 195.11,
+      "end_time": 209.72
+    }
+  },
+  {
+    "query": "The person is adding a liquid ingredient from a small bowl into a pot of boiling water. They then add a handful of rice noodles into the pot. Following this, they are seasoning the dish with 2 tablespoons of chicken Ajinomoto seasoning powder, 1 tablespoon of sugar, and a pinch of salt.",
+    "answer": {
+      "video_name": "L26_V170",
+      "start_time": 179.21,
+      "end_time": 205.68
+    }
+  },
+  {
+    "query": "Chef chop seaweed into small pieces and add it to the same bowl. They then proceed to cut a carrot into thin slices and add it to a bowl with other ingredients",
+    "answer": {
+      "video_name": "L26_V171",
+      "start_time": 74.03,
+      "end_time": 96.39
+    }
+  },
+  {
+    "query": "After frying the dish, the next step is to let it cool so that the green leaves can absorb the oil. Then, they will fry the part of the dish that contains the broth again to create a crispy layer on the outside, which will make the dish more flavorful.",
+    "answer": {
+      "video_name": "L26_V172",
+      "start_time": 170.55,
+      "end_time": 181.77
+    }
+  },
+  {
+    "query": "The person is adding a liquid ingredient from a white bowl into a black frying pan on a stove. The liquid appears to be a dark brown color, possibly soy sauce or another type of sauce. They then stir the contents of the pan with a wooden spoon to mix everything together.",
+    "answer": {
+      "video_name": "L26_V173",
+      "start_time": 154.1,
+      "end_time": 173.86
+    }
+  },
+  {
+    "query": "The chef prefers to use chicken breast because it is tender and juicy, then places the chicken breast into a bag.",
+    "answer": {
+      "video_name": "L26_V174",
+      "start_time": 60.17,
+      "end_time": 72.22
+    }
+  },
+  {
+    "query": "The chef trims the winged beans and explains that they are rich in dietary fiber and vitamin C. These nutrients help boost digestion and keep your gut healthy.",
+    "answer": {
+      "video_name": "L26_V175",
+      "start_time": 60.22,
+      "end_time": 72.22
+    }
+  },
+  {
+    "query": "The chef cuts the pork belly into pieces and places them on a plate. Then, he deseeds and chops the red pepper",
+    "answer": {
+      "video_name": "L26_V176",
+      "start_time": 62.11,
+      "end_time": 75.88
+    }
+  }
+]
