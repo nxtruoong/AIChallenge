@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from fastapi import FastAPI, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -14,15 +15,9 @@ app = FastAPI()
 # Mount the static files for the UI
 app.mount("/static", StaticFiles(directory="api/static"), name="static")
 
-# Ensure video directories exist to prevent StaticFiles from crashing
-os.makedirs("data/raw/Videos_L26_b", exist_ok=True)
-os.makedirs("data/raw/Videos_L26_c", exist_ok=True)
-os.makedirs("data/raw/Videos_L26_d", exist_ok=True)
-
-# Mount the video directories
-app.mount("/videos/L26_b", StaticFiles(directory="data/raw/Videos_L26_b"), name="videos_b")
-app.mount("/videos/L26_c", StaticFiles(directory="data/raw/Videos_L26_c"), name="videos_c")
-app.mount("/videos/L26_d", StaticFiles(directory="data/raw/Videos_L26_d"), name="videos_d")
+# Ensure raw directory exists and mount it
+os.makedirs("data/raw", exist_ok=True)
+app.mount("/videos", StaticFiles(directory="data/raw"), name="videos")
 
 # Initialize search engine lazily or eagerly
 engine = None
@@ -41,6 +36,17 @@ def read_root():
     with open("api/static/index.html", "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), status_code=200)
 
+def find_video_rel_path(video_name: str) -> str:
+    raw_path = Path("data/raw")
+    # Check direct match
+    if (raw_path / f"{video_name}.mp4").exists():
+        return f"/videos/{video_name}.mp4"
+    # Search all subdirectories
+    for mp4_file in raw_path.rglob(f"{video_name}.mp4"):
+        rel = mp4_file.relative_to(raw_path).as_posix()
+        return f"/videos/{rel}"
+    return None
+
 @app.post("/api/search")
 def search(req: SearchRequest):
     search_engine = get_engine()
@@ -50,15 +56,7 @@ def search(req: SearchRequest):
         formatted_clips = []
         for clip in clips:
             video_name = clip["video_name"]
-            folder = None
-            if os.path.exists(f"data/raw/Videos_L26_b/{video_name}.mp4"):
-                folder = "L26_b"
-            elif os.path.exists(f"data/raw/Videos_L26_c/{video_name}.mp4"):
-                folder = "L26_c"
-            elif os.path.exists(f"data/raw/Videos_L26_d/{video_name}.mp4"):
-                folder = "L26_d"
-                
-            video_url = f"/videos/{folder}/{video_name}.mp4" if folder else None
+            video_url = find_video_rel_path(video_name)
             
             formatted_clips.append({
                 "video_name": video_name,

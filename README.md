@@ -33,6 +33,7 @@ AIHCM/
 │   │   ├── extract_audio.py                # Video audio track extractor (.mp3)
 │   │   ├── run_whisper_local.py            # Local faster-whisper ASR transcription
 │   │   ├── detect_shots_dake.py            # Adaptive temporal gap shot boundary detection
+│   │   ├── detect_shots_transnet.py        # TransNet V2 Shot Boundary Detection (ADR 0004)
 │   │   ├── extract_ocr_keyframes.py        # EasyOCR text extractor from keyframes
 │   │   └── recap/                          # Recurrent Video Captioning (ReCap)
 │   │       ├── recap_api.py                # OpenRouter API client (MiMo v2.5 / Gemini)
@@ -90,9 +91,14 @@ All preprocessing code is located in `src/preprocessing/`.
 - Outputs subtitle JSONs into `data/processed/DAKE_output/extracted_subtitles/`
 
 ### 3.3 Shot Boundary Detection
-- Script: `src/preprocessing/detect_shots_dake.py`
-- Groups keyframes into temporal shot units with metadata (`start_time`, `end_time`, keyframe indices)
-- **Important Note on DAKE Keyframe Density**: DAKE guarantees $\ge 1$ keyframe every 2.0s (`delta = 2*fps`). To prevent shots from falling back to the 30s timeout ceiling, set `--min-gap-sec 0.6` and `--gap-multiplier 1.8`:
+- **TransNet V2 Detector (Recommended — ADR 0004)**: `src/preprocessing/detect_shots_transnet.py`
+  - Detects physical scene cut transitions from raw video frames.
+  - Automatically merges micro-shots ($< 1.5$s) and splits long takes ($> 30.0$s).
+  - Maps corresponding DAKE keyframes into shot intervals.
+  ```powershell
+  python src/preprocessing/detect_shots_transnet.py --min-shot-sec 1.5 --max-shot-sec 30.0
+  ```
+- **DAKE Gap Heuristic Fallback**: `src/preprocessing/detect_shots_dake.py`
   ```powershell
   python src/preprocessing/detect_shots_dake.py --min-gap-sec 0.6 --gap-multiplier 1.8 --max-shot-sec 15.0
   ```
@@ -183,7 +189,7 @@ docker-compose up -d
 python src/preprocessing/dake_keyframe_extraction.py
 python src/preprocessing/extract_audio.py
 python src/preprocessing/run_whisper_local.py
-python src/preprocessing/detect_shots_dake.py --min-gap-sec 0.6 --gap-multiplier 1.8 --max-shot-sec 15.0
+python src/preprocessing/detect_shots_transnet.py --min-shot-sec 1.5 --max-shot-sec 30.0
 python src/preprocessing/extract_ocr_keyframes.py
 
 # 3. Generate ReCap Captions (MiMo v2.5)

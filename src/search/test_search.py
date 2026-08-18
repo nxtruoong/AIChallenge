@@ -92,18 +92,35 @@ class SearchEngine:
         self.text_model = SentenceTransformer('BAAI/bge-m3').to(self.device)
 
     def _load_metadata(self):
-        json_files = glob.glob("data/transcripts_with_shots/*.json")
-        for jf in json_files:
+        base_dir = os.getenv("PROCESSED_DATA_DIR", "data/processed")
+        
+        # 1. Load shot boundaries
+        shot_files = glob.glob(os.path.join(base_dir, "DAKE_output/shot_boundaries/*.json")) or glob.glob("kaggle_dataset_staging/shot_boundaries/*.json")
+        for sf in shot_files:
             try:
-                with open(jf, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                    vid = data.get("video_name") or os.path.splitext(os.path.basename(jf))[0]
+                vid = os.path.splitext(os.path.basename(sf))[0]
+                with open(sf, "r", encoding="utf-8") as f:
+                    shots_data = json.load(f)
                     self.shot_boundaries[vid] = {}
+                    if isinstance(shots_data, list):
+                        for s in shots_data:
+                            sid = s.get("shot_id", 0)
+                            self.shot_boundaries[vid][sid] = (s.get("start_time", 0.0), s.get("end_time", 0.0))
+            except Exception:
+                pass
+
+        # 2. Load captions
+        cap_files = glob.glob(os.path.join(base_dir, "DAKE_output/captions/*.json")) or glob.glob("kaggle_dataset_staging/captions/*.json")
+        for cf in cap_files:
+            try:
+                vid = os.path.splitext(os.path.basename(cf))[0]
+                with open(cf, "r", encoding="utf-8") as f:
+                    caps_data = json.load(f)
                     self.shot_captions[vid] = {}
-                    for s in data.get("shots", []):
-                        sid = s["shot_id"]
-                        self.shot_boundaries[vid][sid] = (s["start_time"], s["end_time"])
-                        self.shot_captions[vid][sid] = s.get("caption", "")
+                    if isinstance(caps_data, list):
+                        for c in caps_data:
+                            sid = c.get("shot_id", 0)
+                            self.shot_captions[vid][sid] = c.get("caption", "")
             except Exception:
                 pass
 

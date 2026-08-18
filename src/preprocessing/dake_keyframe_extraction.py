@@ -191,9 +191,9 @@ def process_video(video_path, image_out_root, csv_out_root, rho, jpeg_quality, r
 
 def main():
     ap = argparse.ArgumentParser(description="DAKE keyframe extraction (U-CESE, AIC HCMC 2025)")
-    ap.add_argument("video_dirs", nargs="+", help="Folders of .mp4 videos, e.g. Videos_L26_b Videos_L26_c Videos_L26_d")
-    ap.add_argument("--image-out-dir", required=True, help="Output root for extracted keyframe images")
-    ap.add_argument("--csv-out-dir", required=True, help="Output root for keyframe CSV files")
+    ap.add_argument("video_dirs", nargs="*", default=None, help="Folders of .mp4 videos. If omitted, scans data/raw/.")
+    ap.add_argument("--image-out-dir", default="data/processed/DAKE_output/extracted_keyframe_images", help="Output root for extracted keyframe images")
+    ap.add_argument("--csv-out-dir", default="data/processed/DAKE_output/extracted_keyframe_csvs", help="Output root for keyframe CSV files")
     ap.add_argument("--rho", type=float, default=0.02, help="Keyframe ratio (paper: 0.02)")
     ap.add_argument("--jpeg-quality", type=int, default=90)
     ap.add_argument(
@@ -211,8 +211,18 @@ def main():
     )
     args = ap.parse_args()
 
+    vdirs = args.video_dirs
+    if not vdirs:
+        raw_root = Path("data/raw")
+        if raw_root.exists():
+            vdirs = [str(p) for p in raw_root.iterdir() if p.is_dir() and any(p.glob("*.mp4"))]
+            if not vdirs and any(raw_root.glob("*.mp4")):
+                vdirs = [str(raw_root)]
+        else:
+            vdirs = ["data/raw"]
+
     videos = []
-    for vdir in args.video_dirs:
+    for vdir in vdirs:
         found = sorted(Path(vdir).glob("*.mp4"))
         print(f"Found {len(found)} videos in {vdir}")
         videos.extend(found)

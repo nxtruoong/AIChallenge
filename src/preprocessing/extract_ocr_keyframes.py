@@ -4,7 +4,11 @@ import glob
 from pathlib import Path
 from tqdm import tqdm
 
-def extract_ocr_from_keyframes(keyframe_dir="data/processed/keyframes", output_dir="data/processed/ocr", languages=['en', 'vi']):
+def extract_ocr_from_keyframes(
+    keyframe_dir="data/processed/DAKE_output/extracted_keyframe_images",
+    output_dir="data/processed/DAKE_output/ocr",
+    languages=['en', 'vi']
+):
     """
     Extract OCR text from video keyframes.
     Supports EasyOCR with fallback text parsing.

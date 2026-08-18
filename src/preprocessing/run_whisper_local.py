@@ -130,9 +130,9 @@ def main():
                     help="BatchedInferencePipeline batch size for VAD segments")
 
     # I/O
-    ap.add_argument("--audio-dir", default="DAKE_output/extracted_audios",
+    ap.add_argument("--audio-dir", default="data/processed/DAKE_output/extracted_audios",
                     help="Directory containing .mp3 audio files")
-    ap.add_argument("--output-dir", default="DAKE_output/extracted_subtitles",
+    ap.add_argument("--output-dir", default="data/processed/DAKE_output/extracted_subtitles",
                     help="Directory for output subtitle JSONs")
     ap.add_argument("--test", action="store_true",
                     help="Process only 1 file (smoke test)")

@@ -51,16 +51,26 @@ def process_video(video_path, out_dir, ffmpeg_bin):
 
 def main():
     ap = argparse.ArgumentParser(description="Extract audio from videos using ffmpeg (matching DAKE format)")
-    ap.add_argument("video_dirs", nargs="+", help="Folders containing .mp4 videos, e.g. Videos_L26_b Videos_L26_c Videos_L26_d")
-    ap.add_argument("--audio-out-dir", default="DAKE_output/extracted_audios", help="Output directory for extracted audio files")
+    ap.add_argument("video_dirs", nargs="*", default=None, help="Folders containing .mp4 videos. If omitted, scans data/raw/.")
+    ap.add_argument("--audio-out-dir", default="data/processed/DAKE_output/extracted_audios", help="Output directory for extracted audio files")
     ap.add_argument("--workers", type=int, default=None, help="Parallel workers. Default: min(6, cpu_count())")
     args = ap.parse_args()
 
     ffmpeg_bin = get_ffmpeg_path()
     print(f"Using FFmpeg binary: {ffmpeg_bin}")
 
+    vdirs = args.video_dirs
+    if not vdirs:
+        raw_root = Path("data/raw")
+        if raw_root.exists():
+            vdirs = [str(p) for p in raw_root.iterdir() if p.is_dir() and any(p.glob("*.mp4"))]
+            if not vdirs and any(raw_root.glob("*.mp4")):
+                vdirs = [str(raw_root)]
+        else:
+            vdirs = ["data/raw"]
+
     videos = []
-    for vdir in args.video_dirs:
+    for vdir in vdirs:
         found = sorted(Path(vdir).glob("*.mp4"))
         print(f"Found {len(found)} videos in {vdir}")
         videos.extend(found)
