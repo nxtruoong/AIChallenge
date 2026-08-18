@@ -90,35 +90,39 @@ All preprocessing code is located in `src/preprocessing/`.
 - Subtitles: `src/preprocessing/run_whisper_local.py` (uses `faster-whisper` `large-v3-turbo` with int8 quantization)
 - Outputs subtitle JSONs into `data/processed/DAKE_output/extracted_subtitles/`
 
-### 3.3 Shot Boundary Detection
-- **TransNet V2 Detector (Recommended — ADR 0004)**: `src/preprocessing/detect_shots_transnet.py`
-  - Detects physical scene cut transitions from raw video frames.
-  - Automatically merges micro-shots ($< 1.5$s) and splits long takes ($> 30.0$s).
-  - Maps corresponding DAKE keyframes into shot intervals.
-  ```powershell
-  python src/preprocessing/detect_shots_transnet.py --min-shot-sec 1.5 --max-shot-sec 30.0
-  ```
-- **DAKE Gap Heuristic Fallback**: `src/preprocessing/detect_shots_dake.py`
-  ```powershell
-  python src/preprocessing/detect_shots_dake.py --min-gap-sec 0.6 --gap-multiplier 1.8 --max-shot-sec 15.0
-  ```
-- Outputs JSON files into `data/processed/DAKE_output/shot_boundaries/`
+### 3.3 Shot Boundary Detection (TransNet V2 + Smart Merge)
+
+Shot segmentation uses **TransNet V2** (PyTorch 3D-CNN) with **`smart_merge_shots`** (greedy shortest-neighbor iterative merge, $T_{min} = 10.0$s) to generate natural shot boundaries and map DAKE keyframes into shot intervals.
+
+#### Method A: Local Multi-Core CPU Execution
+```powershell
+# Run with 4 CPU worker processes on L26 videos
+python src/preprocessing/detect_shots_transnet.py --prefix L26 --workers 4 --min-shot-sec 10.0 --overwrite
+
+# Smoke test on a single video
+python src/preprocessing/detect_shots_transnet.py --test
+```
+
+#### Method B: Kaggle GPU Cloud Execution (~5-7s / video)
+1. Open [`notebooks/kaggle_transnet_shots.ipynb`](notebooks/kaggle_transnet_shots.ipynb) in Kaggle with **GPU T4 x 2** or **P100**.
+2. Add your video dataset (e.g. `L26_100_399`).
+3. Set `START_VIDEO_ID = "L26_V100"` (or resume from any video ID like `L26_V128`).
+4. Run notebook to generate and download `shot_boundaries.zip`.
+5. Extract JSON files into `data/processed/DAKE_output/shot_boundaries/`.
+
+- Outputs: `data/processed/DAKE_output/shot_boundaries/{video_id}.json`
 
 ### 3.4 OCR Keyframe Extraction
 - Script: `src/preprocessing/extract_ocr_keyframes.py`
 - Runs EasyOCR across keyframes to extract screen text strings (`ocr_text`)
 
 ### 3.5 ReCap Video Captioning (with Recurrent Memory)
-- **API Client**: `src/preprocessing/recap/recap_api.py` (OpenRouter API client for `xiaomi/mimo-v2.5`, image downscaling to 512px, exponential backoff)
-- **Prompt Template**: `api/prompt_template.txt` (Structured recurrent memory $M_t$ with tag pruning and detailed shot description)
-- **Single-Video Smoke Test**:
+- **API Client**: `src/preprocessing/recap/recap_api.py` (Supports `gpt-5.4-mini` on `apimaster.ai` or `xiaomi/mimo-v2.5` on OpenRouter with exponential backoff)
+- **Prompt Template**: `api/prompt_template.txt` (Structured recurrent memory $M_t$ with dynamic tag pruning and strict English captions with Vietnamese entity retention)
+- **Parallel Multi-Worker Batch Processing**:
   ```powershell
-  python src/preprocessing/recap/test_recap_L21_V001.py --video-id L21_V001 --base-dir data/processed
-  ```
-- **Parallel Batch Processing**:
-  ```powershell
-  # Batch process videos with 5 workers
-  python src/preprocessing/recap/process_recap_parallel.py --batch-range 101 200 --batch-prefix L26_V --workers 5
+  # Run parallel caption generation across all L26 shot files with 10 workers
+  python src/preprocessing/recap/process_recap_parallel.py --base-dir data/processed --workers 10
   ```
 - Outputs saved to `data/processed/DAKE_output/captions/{video_id}.json`
 
