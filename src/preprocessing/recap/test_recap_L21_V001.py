@@ -1,8 +1,10 @@
 import os
 import json
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.recap_api import call_recap_api
+try:
+    from .recap_api import call_recap_api
+except ImportError:
+    from recap_api import call_recap_api
 
 def get_subtitle_for_shot(shot_start, shot_end, subtitles):
     shot_subs = []
