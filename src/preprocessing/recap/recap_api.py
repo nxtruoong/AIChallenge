@@ -17,12 +17,13 @@ def encode_image(image_path, max_size=(512, 512)):
         return base64.b64encode(buffer.getvalue()).decode('utf-8')
 
 def call_recap_api(video_info, keyframes_paths, subtitle, previous_memory, template_name="prompt_template.txt", model=None):
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("RECAP_API_KEY") or os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        raise ValueError("OPENROUTER_API_KEY environment variable not set")
+        raise ValueError("RECAP_API_KEY / OPENROUTER_API_KEY environment variable not set")
         
+    api_base = os.getenv("RECAP_API_BASE", "https://api.apimaster.ai/v1/chat/completions")
     if model is None:
-        model = os.getenv("RECAP_MODEL", "xiaomi/mimo-v2.5")
+        model = os.getenv("RECAP_MODEL", "gpt-5.4-mini")
         
     template_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'api', template_name)
     if not os.path.exists(template_path):
@@ -56,7 +57,7 @@ def call_recap_api(video_info, keyframes_paths, subtitle, previous_memory, templ
             }
         ],
         "response_format": {"type": "json_object"},
-        "max_tokens": 2000
+        "max_tokens": 1000
     }
     
     headers = {
@@ -67,7 +68,7 @@ def call_recap_api(video_info, keyframes_paths, subtitle, previous_memory, templ
     for attempt in range(5):
         try:
             response = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
+                api_base,
                 headers=headers,
                 json=payload,
                 timeout=90

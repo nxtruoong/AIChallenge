@@ -5,9 +5,8 @@ Matches algorithm in `making_shot (1).ipynb`:
   1. Uses PyTorch TransNet V2 (`from transnetv2_pytorch import TransNetV2`) with CUDA/CPU support.
   2. Uses `smart_merge_shots`: iterative greedy merge of the shortest shot into its shorter neighbor.
   3. Default min_duration = 10.0s (matching `making_shot (1).ipynb`).
-  4. Splits long continuous shots (> 30.0s) into <= 20.0s sub-shots.
-  5. Maps DAKE keyframes into shot intervals [start_time, end_time].
-  6. Saves JSON schema to data/processed/DAKE_output/shot_boundaries/{video_id}.json.
+  4. Maps DAKE keyframes into shot intervals [start_time, end_time].
+  5. Saves JSON schema to data/processed/DAKE_output/shot_boundaries/{video_id}.json.
 
 Usage:
     python src/preprocessing/detect_shots_transnet.py
@@ -264,13 +263,42 @@ def process_video(
         "keyframes": sum(len(s["keyframes"]) for s in output_payload)
     }
 
+_worker_model = None
+
+def init_worker_process():
+    global _worker_model
+    venv_scripts = Path(sys.executable).parent
+    if venv_scripts.exists():
+        os.environ["PATH"] = str(venv_scripts) + os.pathsep + os.environ.get("PATH", "")
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if HAS_TRANSNET:
+        _worker_model = TransNetV2(device=device)
+
+def worker_task(args_tuple):
+    global _worker_model
+    vp, dake_csv_dir, output_dir, min_shot_sec, overwrite = args_tuple
+    try:
+        return process_video(
+            vp,
+            dake_csv_dir=dake_csv_dir,
+            output_dir=output_dir,
+            model=_worker_model,
+            min_shot_sec=min_shot_sec,
+            overwrite=overwrite
+        )
+    except Exception as e:
+        return {"video": vp.stem, "status": "error", "error": str(e)}
+
 def main():
+    import concurrent.futures
+
     parser = argparse.ArgumentParser(description="TransNet V2 Shot Boundary Detection with Smart Merge (making_shot)")
     parser.add_argument("--video-dir", default=os.getenv("RAW_DATA_DIR", "data/raw"), help="Raw videos directory")
     parser.add_argument("--dake-csv-dir", default="data/processed/DAKE_output/extracted_keyframe_csvs", help="DAKE keyframe CSV directory")
     parser.add_argument("--output-dir", default="data/processed/DAKE_output/shot_boundaries", help="Shot boundaries output directory")
     parser.add_argument("--min-shot-sec", type=float, default=10.0, help="Min shot duration for smart merge (default: 10.0s)")
     parser.add_argument("--prefix", type=str, default="L26", help="Filter video name prefix (default: L26)")
+    parser.add_argument("--workers", type=int, default=min(4, os.cpu_count() or 4), help="Parallel CPU workers (default: 4)")
     parser.add_argument("--overwrite", action="store_true", help="Overwrite existing shot boundary files")
     parser.add_argument("--test", action="store_true", help="Process only 1 video for smoke test")
     args = parser.parse_args()
@@ -279,15 +307,6 @@ def main():
     dake_csv_dir = Path(args.dake_csv_dir)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Initialize TransNetV2 Model
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = None
-    if HAS_TRANSNET:
-        print(f"Initializing TransNetV2 model on device: {device}...")
-        model = TransNetV2(device=device)
-    else:
-        print("TransNetV2 not available. Using fast OpenCV gradient fallback.")
 
     # Discover videos
     all_videos = sorted(raw_dir.rglob("*.mp4"))
@@ -315,20 +334,26 @@ def main():
         print("All shot boundaries already generated.")
         return
 
-    for vp in tqdm(todo_paths, desc="Processing Shots"):
-        try:
-            res = process_video(
-                vp,
-                dake_csv_dir=dake_csv_dir,
-                output_dir=output_dir,
-                model=model,
-                min_shot_sec=args.min_shot_sec,
-                overwrite=args.overwrite
-            )
-            if res.get("status") == "done":
-                tqdm.write(f"  {res['video']}: {res['raw_shots']} raw -> {res['final_shots']} smart-merged shots ({res['keyframes']} keyframes)")
-        except Exception as e:
-            tqdm.write(f"  ERROR {vp.name}: {e}")
+    tasks = [(vp, dake_csv_dir, output_dir, args.min_shot_sec, args.overwrite) for vp in todo_paths]
+    print(f"Processing with {args.workers} parallel multi-core CPU workers...")
+
+    if args.workers <= 1 or args.test:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        model = TransNetV2(device=device) if HAS_TRANSNET else None
+        for vp in tqdm(todo_paths, desc="Processing Shots"):
+            try:
+                res = process_video(vp, dake_csv_dir, output_dir, model=model, min_shot_sec=args.min_shot_sec, overwrite=args.overwrite)
+                if res.get("status") == "done":
+                    tqdm.write(f"  {res['video']}: {res['raw_shots']} raw -> {res['final_shots']} shots ({res['keyframes']} kfs)")
+            except Exception as e:
+                tqdm.write(f"  ERROR {vp.name}: {e}")
+    else:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=args.workers, initializer=init_worker_process) as executor:
+            for res in tqdm(executor.map(worker_task, tasks), total=len(tasks), desc="Processing Shots (Parallel)"):
+                if res.get("status") == "done":
+                    tqdm.write(f"  {res['video']}: {res['raw_shots']} raw -> {res['final_shots']} smart-merged shots ({res['keyframes']} keyframes)")
+                elif res.get("status") == "error":
+                    tqdm.write(f"  ERROR {res.get('video')}: {res.get('error')}")
 
 if __name__ == "__main__":
     main()

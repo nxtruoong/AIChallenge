@@ -16,9 +16,9 @@ def get_subtitle_for_shot(shot_start, shot_end, subtitles):
             shot_subs.append(sub['text'])
     return " ".join(shot_subs)
 
-def process_video(video_id, base_dir, raw_dir, out_dir):
+def process_video(video_id, base_dir, raw_dir, out_dir, overwrite=False):
     out_path = os.path.join(out_dir, f"{video_id}.json")
-    if os.path.exists(out_path):
+    if not overwrite and os.path.exists(out_path):
         print(f"Skipping {video_id}, already processed.")
         return True
         
@@ -105,6 +105,7 @@ def main():
     parser.add_argument("--batch-prefix", type=str, default="L26_V", help="Video prefix (e.g. L26_V)")
     parser.add_argument("--workers", type=int, default=5, help="Number of concurrent worker threads")
     parser.add_argument("--model", type=str, default=None, help="LLM/LVLM model slug (default: xiaomi/mimo-v2.5)")
+    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing caption files")
     args = parser.parse_args()
 
     base_dir = args.base_dir
@@ -120,7 +121,7 @@ def main():
         # Auto-discover from shot_boundaries directory
         shots_dir = os.path.join(base_dir, "DAKE_output", "shot_boundaries")
         if os.path.exists(shots_dir):
-            video_ids = [os.path.splitext(f)[0] for f in os.listdir(shots_dir) if f.endswith(".json")]
+            video_ids = sorted([os.path.splitext(f)[0] for f in os.listdir(shots_dir) if f.startswith("L26_") and f.endswith(".json")])
         else:
             video_ids = ["L26_V245"]
             
@@ -128,7 +129,7 @@ def main():
     print(f"Workers: {args.workers} | Model: {args.model or os.getenv('RECAP_MODEL', 'xiaomi/mimo-v2.5')}")
     
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as executor:
-        futures = {executor.submit(process_video, vid, base_dir, raw_dir, out_dir): vid for vid in video_ids}
+        futures = {executor.submit(process_video, vid, base_dir, raw_dir, out_dir, args.overwrite): vid for vid in video_ids}
         
         for future in concurrent.futures.as_completed(futures):
             vid = futures[future]
