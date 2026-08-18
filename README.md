@@ -105,11 +105,20 @@ python src/preprocessing/detect_shots_transnet.py --test
 ```
 
 #### Method B: Kaggle GPU Cloud Execution (~5-7s / video)
-1. Open [`notebooks/kaggle_transnet_shots.ipynb`](notebooks/kaggle_transnet_shots.ipynb) in Kaggle with **GPU T4 x 2** or **P100**.
-2. Add your video dataset (e.g. `L26_100_399`).
-3. Set `START_VIDEO_ID = "L26_V100"` (or resume from any video ID like `L26_V128`).
-4. Run notebook to generate and download `shot_boundaries.zip`.
-5. Extract JSON files into `data/processed/DAKE_output/shot_boundaries/`.
+1. **Accelerator**: Select **GPU T4 x 2** (Settings $\to$ Accelerator $\to$ **GPU T4 x 2** for fastest CUDA batch processing).
+2. **Kaggle Dataset Input Structure**:
+   ```
+   /kaggle/input/
+   └── <dataset-name>/               # e.g., l21-01-31 or l26-100-399
+       └── Videos_<batch>/           # e.g., Videos_L21_a or Videos_L26_b
+           ├── L21_V001.mp4
+           ├── L21_V002.mp4
+           └── ...
+   ```
+3. Open [`notebooks/kaggle_transnet_shots.ipynb`](notebooks/kaggle_transnet_shots.ipynb) on Kaggle.
+4. Set `START_VIDEO_ID = None` (for all videos) or e.g. `"L26_V128"` to resume from a specific ID.
+5. Run the notebook to generate and download `shot_boundaries.zip`.
+6. Extract JSON files into `data/processed/DAKE_output/shot_boundaries/`.
 
 - Outputs: `data/processed/DAKE_output/shot_boundaries/{video_id}.json`
 
