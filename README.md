@@ -61,9 +61,10 @@ AIHCM/
 - Install: `pip install -r requirements.txt`
 - Create `.env` file in root with API keys:
   ```ini
-  # ReCap Captioning (MiMo v2.5 via OpenRouter)
-  OPENROUTER_API_KEY=sk-or-v1-...
-  RECAP_MODEL=xiaomi/mimo-v2.5
+  # ReCap Captioning (apimaster.ai / OpenAI-compatible / OpenRouter)
+  RECAP_API_KEY=sk-...
+  RECAP_API_BASE=https://api.apimaster.ai/v1/chat/completions
+  RECAP_MODEL=gpt-5.4-mini
 
   # Query Distillation (Gemini via OpenRouter / Google API)
   OPENROUTER_DISTILL_API_KEY=sk-or-v1-...
@@ -74,7 +75,7 @@ AIHCM/
   ES_URL=http://localhost:9200
   MILVUS_URI=http://localhost:19530
   ```
-- Place videos in `data/raw/` (e.g. `Videos_L26_b`, `Videos_L26_c`, `Videos_L26_d`, `media-info-aic25-b1`)
+- Place videos in `data/raw/` (e.g. `Videos_L26_b`, `Videos_L26_c`, `Videos_L26_d`, and `TrainingData/media-info-aic25-b1/media-info/`)
 
 ---
 
@@ -118,6 +119,11 @@ python src/preprocessing/detect_shots_transnet.py --test
 
 ### 3.5 ReCap Video Captioning (with Recurrent Memory)
 - **API Client**: `src/preprocessing/recap/recap_api.py` (Supports `gpt-5.4-mini` on `apimaster.ai` or `xiaomi/mimo-v2.5` on OpenRouter with exponential backoff)
+- **Multi-Modal Inputs Fed Per Shot**:
+  1. **Video Info**: Title & Description auto-discovered from `data/raw/**/media-info/{video_id}.json`.
+  2. **Subtitle ($S_t$)**: Audio transcript matching current shot interval `[start_time, end_time]`.
+  3. **Keyframes ($K_t$)**: Midpoint DAKE image representing visual scene ($512\times 512$ JPEG).
+  4. **Previous Memory ($M_{t-1}$)**: Recurrent context carry-over with dynamic entity tagging and pruning.
 - **Prompt Template**: `api/prompt_template.txt` (Structured recurrent memory $M_t$ with dynamic tag pruning and strict English captions with Vietnamese entity retention)
 - **Parallel Multi-Worker Batch Processing**:
   ```powershell

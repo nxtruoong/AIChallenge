@@ -24,7 +24,15 @@ def process_video(video_id, base_dir, raw_dir, out_dir, overwrite=False):
         
     print(f"\n========== Processing {video_id} ==========")
     
-    media_info_path = os.path.join(raw_dir, "media-info-aic25-b1", "media-info", f"{video_id}.json")
+    # Auto-find media info JSON in raw_dir subfolders
+    media_info_path = os.path.join(raw_dir, "TrainingData", "media-info-aic25-b1", "media-info", f"{video_id}.json")
+    if not os.path.exists(media_info_path):
+        media_info_path = os.path.join(raw_dir, "media-info-aic25-b1", "media-info", f"{video_id}.json")
+    if not os.path.exists(media_info_path):
+        candidates = list(Path(raw_dir).glob(f"**/{video_id}.json"))
+        if candidates:
+            media_info_path = str(candidates[0])
+            
     video_info = ""
     if os.path.exists(media_info_path):
         with open(media_info_path, 'r', encoding='utf-8') as f:
