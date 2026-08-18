@@ -18,11 +18,26 @@ def get_subtitle_for_shot(shot_start, shot_end, subtitles):
 
 def process_video(video_id, base_dir, raw_dir, out_dir, overwrite=False):
     out_path = os.path.join(out_dir, f"{video_id}.json")
-    if not overwrite and os.path.exists(out_path):
-        print(f"Skipping {video_id}, already processed.")
-        return True
+    
+    shots_path = os.path.join(base_dir, "DAKE_output", "shot_boundaries", f"{video_id}.json")
+    if not os.path.exists(shots_path):
+        print(f"No shot boundaries for {video_id}. Skipping.", flush=True)
+        return False
         
-    print(f"\n========== Processing {video_id} ==========")
+    with open(shots_path, 'r', encoding='utf-8') as f:
+        shots = json.load(f)
+        
+    if not overwrite and os.path.exists(out_path):
+        try:
+            with open(out_path, 'r', encoding='utf-8') as f:
+                existing = json.load(f)
+            if len(existing) == len(shots):
+                print(f"Skipping {video_id}, all {len(shots)} shots already processed.", flush=True)
+                return True
+        except Exception:
+            pass
+
+    print(f"\n========== Processing {video_id} ({len(shots)} shots) ==========", flush=True)
     
     # Auto-find media info JSON in raw_dir subfolders
     media_info_path = os.path.join(raw_dir, "TrainingData", "media-info-aic25-b1", "media-info", f"{video_id}.json")
@@ -38,14 +53,6 @@ def process_video(video_id, base_dir, raw_dir, out_dir, overwrite=False):
         with open(media_info_path, 'r', encoding='utf-8') as f:
             media_info = json.load(f)
         video_info = f"Title: {media_info.get('title', '')}\nDescription: {media_info.get('description', '')}"
-    
-    shots_path = os.path.join(base_dir, "DAKE_output", "shot_boundaries", f"{video_id}.json")
-    if not os.path.exists(shots_path):
-        print(f"No shot boundaries for {video_id}. Skipping.")
-        return False
-        
-    with open(shots_path, 'r', encoding='utf-8') as f:
-        shots = json.load(f)
         
     subs_path = os.path.join(base_dir, "DAKE_output", "extracted_subtitles", f"{video_id}.json")
     subtitles = []
@@ -55,13 +62,28 @@ def process_video(video_id, base_dir, raw_dir, out_dir, overwrite=False):
         
     img_dir = os.path.join(base_dir, "DAKE_output", "extracted_keyframe_images", video_id)
     
+    # Check for partial progress to resume
     previous_memory = "None"
     output_captions = []
+    start_shot_idx = 0
     
+    if not overwrite and os.path.exists(out_path):
+        try:
+            with open(out_path, 'r', encoding='utf-8') as f:
+                output_captions = json.load(f)
+            if output_captions:
+                start_shot_idx = len(output_captions)
+                previous_memory = output_captions[-1].get("memory", "None")
+                print(f"[{video_id}] Resuming from shot {start_shot_idx + 1}/{len(shots)}...", flush=True)
+        except Exception:
+            output_captions = []
+            start_shot_idx = 0
+            
     error_occurred = False
     
-    for i, shot in enumerate(shots):
-        print(f"[{video_id}] Processing shot {i+1}/{len(shots)}")
+    for i in range(start_shot_idx, len(shots)):
+        shot = shots[i]
+        print(f"[{video_id}] Processing shot {i+1}/{len(shots)}", flush=True)
         shot_start = shot['start_time']
         shot_end = shot['end_time']
         
@@ -86,20 +108,22 @@ def process_video(video_id, base_dir, raw_dir, out_dir, overwrite=False):
                 "memory": previous_memory
             })
             
+            # Incremental auto-save after every single shot
+            with open(out_path, 'w', encoding='utf-8') as f:
+                json.dump(output_captions, f, ensure_ascii=False, indent=2)
+            
         except Exception as e:
             safe_e = str(e).encode('ascii', 'backslashreplace').decode('ascii')
-            print(f"[{video_id}] Error processing shot {i}: {safe_e}")
+            print(f"[{video_id}] Error processing shot {i}: {safe_e}", flush=True)
             traceback.print_exc()
             error_occurred = True
             break
             
     if error_occurred:
-        print(f"[{video_id}] Failed to process completely.")
+        print(f"[{video_id}] Stopped partially at shot {len(output_captions)}/{len(shots)}.", flush=True)
         return False
         
-    with open(out_path, 'w', encoding='utf-8') as f:
-        json.dump(output_captions, f, ensure_ascii=False, indent=2)
-    print(f"[{video_id}] Done! Results saved to {out_path}")
+    print(f"[{video_id}] Done! All {len(output_captions)} shots saved to {out_path}", flush=True)
     return True
 
 def main():
@@ -129,7 +153,8 @@ def main():
         # Auto-discover from shot_boundaries directory
         shots_dir = os.path.join(base_dir, "DAKE_output", "shot_boundaries")
         if os.path.exists(shots_dir):
-            video_ids = sorted([os.path.splitext(f)[0] for f in os.listdir(shots_dir) if f.startswith("L26_") and f.endswith(".json")])
+            prefix = args.batch_prefix if args.batch_prefix else ""
+            video_ids = sorted([os.path.splitext(f)[0] for f in os.listdir(shots_dir) if f.startswith(prefix) and f.endswith(".json")])
         else:
             video_ids = ["L26_V245"]
             
