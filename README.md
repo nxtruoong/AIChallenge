@@ -1,173 +1,197 @@
-# AIChallenge - Multimodal Video Retrieval & VQA System
+# AIHCM — Multi-Modal Video Retrieval Pipeline & Workspace Guide
 
-A high-performance, two-stage hybrid multimodal video search and Visual Question Answering (VQA) system designed for the Ho Chi Minh City AI Challenge.
-
----
-
-## 🌟 Overview & Architecture
-
-The system provides end-to-end capabilities for large-scale video archive indexing, multimodal search, temporal keyframe localization, and visual question answering.
+## 1. Workspace Directory Structure
 
 ```
-                  ┌────────────────────────────────────────────────────────┐
-                  │                 Interactive Web UI                     │
-                  │   Query Distillation • Video Scrubbing • Gemini VQA    │
-                  └──────────────────────────┬─────────────────────────────┘
-                                             │ REST API
-                  ┌──────────────────────────▼─────────────────────────────┐
-                  │                FastAPI / Search Backend                │
-                  └──────────────┬───────────────────────────┬─────────────┘
-                                 │                           │
-                   Stage 1: Multi-Vector Search      Stage 2: Neural Reranking
-          ┌──────────────────────┼──────────────────────┐    ┌─────────────────────┐
-          │                      │                      │    │  BGE Cross-Encoder  │
-┌─────────▼───────────┐┌─────────▼──────────┐┌──────────▼────┴────┐ (BAAI/bge-      │
-│ MobileCLIP2/SigLIP  ││ Text Embedding     ││ BM25 Sparse Index  │  reranker-base)   │
-│ Visual Embeddings   ││ Semantic Captions  ││ OCR + ASR Subtitles│                   │
-└─────────────────────┘└────────────────────┘└────────────────────┴─────────────────────┘
-                                 │
-                    Reciprocal Rank Fusion (RRF)
-```
-
-### Key Features
-1. **Two-Stage Hybrid Search Pipeline**:
-   - **Stage 1 (Retrieval & Fusion)**: Weighted Reciprocal Rank Fusion combining MobileCLIP2/SigLIP visual similarity, dense caption embeddings, and BM25 sparse matching on OCR and ASR speech transcripts.
-   - **Stage 2 (Reranking & Expansion)**: BGE Cross-Encoder reranker (`BAAI/bge-reranker-base`) with temporal window expansion (neighboring keyframe contextual boosting).
-2. **LLM Query Distillation**: Automatically parses complex natural language queries into visual descriptors, semantic summaries, and entity/Vietnamese keywords for targeted multi-field retrieval.
-3. **Visual Question Answering (VQA)**: Built-in integration with Google Gemini Multimodal API to answer detailed queries on retrieved keyframes and video segments.
-4. **Interactive Web Interface**: Real-time video playback, keyframe thumbnail grid, temporal scrubbing, dynamic weight adjustment, and query analysis.
-
----
-
-## 📁 Repository Structure
-
-```
-.
-├── api/
-│   ├── api.py                    # FastAPI server exposing search & VQA endpoints
-│   ├── prompt_template.txt       # System prompt for multimodal video captioning
-│   └── static/                   # Web frontend assets (HTML, CSS, JavaScript)
-│       ├── app.js
+AIHCM/
+├── api/                                    # FastAPI Backend & Web UI
+│   ├── api.py                              # Search REST API endpoints & video static mounts
+│   ├── prompt_template.txt                 # ReCap prompt with recurrent memory schema
+│   └── static/                             # Search UI assets (HTML, CSS, JS)
 │       ├── index.html
-│       └── styles.css
-├── src/
-│   ├── data/                     # Data loading and batch iteration utilities
-│   ├── eval/                     # Evaluation metrics and retrieval evaluation tools
-│   ├── preprocessing/            # Keyframe extraction, OCR, and Whisper ASR scripts
-│   ├── search/                   # Hybrid retrieval engine and test search scripts
-│   ├── utils/                    # Helper utilities and notebook update scripts
-│   ├── process_recap_L26.py      # Video recap generation pipeline
-│   ├── process_recap_L26_parallel.py # Parallelized video recap processor
-│   ├── recap_api.py              # Multimodal captioning API client
-│   └── test_latency.py           # API latency benchmarking script
-├── notebooks/                    # Kaggle and local development Jupyter notebooks
-│   ├── kaggle_notebook_a_preprocessing.ipynb
-│   ├── kaggle_notebook_b_search.ipynb
-│   ├── kaggle_generate_vectors.ipynb
-│   └── whisper_template.ipynb
-├── scratch/                      # Benchmark, fusion tuning, and grid-search scripts
-├── docker-compose.yml            # Dockerized deployment configuration
-├── requirements.txt              # Project Python dependencies
-└── .env.example                  # Environment variables template
+│       ├── styles.css
+│       └── app.js
+├── data/                                   # Data Store (Git-ignored)
+│   ├── raw/                                # Raw video files & media-info JSONs
+│   │   ├── Videos_L26_b/
+│   │   ├── Videos_L26_c/
+│   │   └── media-info-aic25-b1/
+│   └── processed/                          # Pipeline outputs
+│       ├── DAKE_output/                    # Extracted keyframes, audio, subtitles, shots, captions
+│       │   ├── extracted_keyframe_images/
+│       │   ├── extracted_keyframe_csvs/
+│       │   ├── extracted_subtitles/
+│       │   ├── shot_boundaries/
+│       │   ├── ocr/
+│       │   └── captions/
+│       └── kaggle_output_0002/             # Downloaded vector embeddings & metadata DataFrames
+├── notebooks/                              # Kaggle GPU Indexing Notebooks
+│   └── kaggle_generate_vectors.ipynb       # SigLIP-SO400M + BGE-m3 + EasyOCR vector builder
+├── src/                                    # Main Pipeline Source Code
+│   ├── preprocessing/                      # Preprocessing & Video Ingestion
+│   │   ├── dake_keyframe_extraction.py     # Dynamic-aware keyframe extraction (U-CESE)
+│   │   ├── extract_audio.py                # Video audio track extractor (.mp3)
+│   │   ├── run_whisper_local.py            # Local faster-whisper ASR transcription
+│   │   ├── detect_shots_dake.py            # Adaptive temporal gap shot boundary detection
+│   │   ├── extract_ocr_keyframes.py        # EasyOCR text extractor from keyframes
+│   │   └── recap/                          # Recurrent Video Captioning (ReCap)
+│   │       ├── recap_api.py                # OpenRouter API client (MiMo v2.5 / Gemini)
+│   │       ├── process_recap_parallel.py   # Multi-worker parallel batch caption generator
+│   │       └── test_recap_L21_V001.py      # Single-video verification driver
+│   ├── data/                               # Database Ingestion
+│   │   └── ingest_to_db.py                 # Milvus (HNSW vectors) & Elasticsearch (BM25) bulk loader
+│   ├── search/                             # Search Engine Core
+│   │   ├── __init__.py                     # Package export
+│   │   ├── test_search.py                  # Multi-Modal SearchEngine (SigLIP + BGE + BM25 + RRF)
+│   │   └── query_distiller.py              # LLM Query Distillation (Gemini via OpenRouter)
+│   └── eval/                               # Evaluation & Benchmarking
+│       └── evaluate.py                     # Strict ground truth benchmark evaluator (R@1, R@5, R@10)
+├── docker-compose.yml                      # Milvus (Standalone) + Elasticsearch container orchestration
+├── query.json                              # Ground-truth evaluation queries & timestamps
+├── requirements.txt                        # Python dependencies
+├── workspace_guide.md                      # Detailed technical guide
+└── README.md                               # Project documentation
 ```
 
 ---
 
-## 🚀 Getting Started
+## 2. Environment Setup
+- Dependencies in `requirements.txt`
+- Install: `pip install -r requirements.txt`
+- Create `.env` file in root with API keys:
+  ```ini
+  # ReCap Captioning (MiMo v2.5 via OpenRouter)
+  OPENROUTER_API_KEY=sk-or-v1-...
+  RECAP_MODEL=xiaomi/mimo-v2.5
 
-### 1. Prerequisites
-- Python 3.10 or higher
-- NVIDIA GPU with CUDA support (recommended for embedding extraction and reranking)
-- Git & Git LFS (if handling model weights)
+  # Query Distillation (Gemini via OpenRouter / Google API)
+  OPENROUTER_DISTILL_API_KEY=sk-or-v1-...
+  DISTILL_MODEL=google/gemini-2.5-flash
+  GEMINI_API_KEY=AIza...
 
-### 2. Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/nxtruoong/AIChallenge.git
-   cd AIChallenge
-   ```
-
-2. **Create and activate a virtual environment:**
-   ```bash
-   python -m venv .venv
-   # On Windows:
-   .venv\Scripts\activate
-   # On Linux/macOS:
-   source .venv/bin/activate
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install --upgrade pip
-   pip install -r requirements.txt
-   ```
-
-### 3. Environment Configuration
-
-Copy the example environment configuration:
-```bash
-cp .env.example .env
-```
-Edit `.env` with your API keys:
-```ini
-# Google Gemini API Keys (for VQA & multimodal captioning)
-GEMINI_API_KEY=your_gemini_api_key_here
-
-# OpenRouter API Key (for LLM query distillation)
-OPENROUTER_API_KEY=your_openrouter_api_key_here
-
-# Optional: Elasticsearch endpoint if used
-ES_URL=http://localhost:9200
-ES_API_KEY=your_elasticsearch_api_key_here
-```
+  # Databases
+  ES_URL=http://localhost:9200
+  MILVUS_URI=http://localhost:19530
+  ```
+- Place videos in `data/raw/` (e.g. `Videos_L26_b`, `Videos_L26_c`, `Videos_L26_d`, `media-info-aic25-b1`)
 
 ---
 
-## 🛠️ Usage
+## 3. Data Pipeline Workflow
+All preprocessing code is located in `src/preprocessing/`.
 
-### 1. Running the Web Application & API
-Start the backend server:
-```bash
-python api/api.py
-```
-Open your browser and navigate to:
-```
-http://localhost:8000
-```
+### 3.1 Keyframe Extraction (DAKE)
+- Script: `src/preprocessing/dake_keyframe_extraction.py`
+- Extracts dynamic-aware keyframes (U-CESE Algorithm 1) into `data/processed/DAKE_output/extracted_keyframe_images/`
 
-### 2. Running Feature Extraction & Preprocessing
-To extract keyframes, OCR, ASR audio transcripts, and visual embeddings:
-```bash
-# Process keyframes and extract embeddings
-python src/preprocessing/extract_features.py --video_dir /path/to/videos --output_dir /path/to/output
+### 3.2 Audio Extraction & Transcription (ASR)
+- Audio: `src/preprocessing/extract_audio.py` (extracts `.mp3`)
+- Subtitles: `src/preprocessing/run_whisper_local.py` (uses `faster-whisper` `large-v3-turbo` with int8 quantization)
+- Outputs subtitle JSONs into `data/processed/DAKE_output/extracted_subtitles/`
 
-# Run parallelized recap/caption generation
-python src/process_recap_L26_parallel.py
-```
+### 3.3 Shot Boundary Detection
+- Script: `src/preprocessing/detect_shots_dake.py`
+- Groups keyframes into temporal shot units with metadata (`start_time`, `end_time`, keyframe indices)
+- **Important Note on DAKE Keyframe Density**: DAKE guarantees $\ge 1$ keyframe every 2.0s (`delta = 2*fps`). To prevent shots from falling back to the 30s timeout ceiling, set `--min-gap-sec 0.6` and `--gap-multiplier 1.8`:
+  ```powershell
+  python src/preprocessing/detect_shots_dake.py --min-gap-sec 0.6 --gap-multiplier 1.8 --max-shot-sec 15.0
+  ```
+- Outputs JSON files into `data/processed/DAKE_output/shot_boundaries/`
 
-### 3. Testing Hybrid Search CLI
-```bash
-python src/search/test_search.py --query "người đàn ông mặc áo xanh lái xe máy"
-```
+### 3.4 OCR Keyframe Extraction
+- Script: `src/preprocessing/extract_ocr_keyframes.py`
+- Runs EasyOCR across keyframes to extract screen text strings (`ocr_text`)
 
-### 4. Running Benchmarks & Parameter Tuning
-Evaluate fusion weights and retrieval accuracy:
-```bash
-python scratch/benchmark_fusion.py
-python scratch/grid_search_optimal.py
-```
-
----
-
-## 🐳 Docker Deployment
-
-To build and run the entire stack using Docker Compose:
-```bash
-docker-compose up --build
-```
+### 3.5 ReCap Video Captioning (with Recurrent Memory)
+- **API Client**: `src/preprocessing/recap/recap_api.py` (OpenRouter API client for `xiaomi/mimo-v2.5`, image downscaling to 512px, exponential backoff)
+- **Prompt Template**: `api/prompt_template.txt` (Structured recurrent memory $M_t$ with tag pruning and detailed shot description)
+- **Single-Video Smoke Test**:
+  ```powershell
+  python src/preprocessing/recap/test_recap_L21_V001.py --video-id L21_V001 --base-dir data/processed
+  ```
+- **Parallel Batch Processing**:
+  ```powershell
+  # Batch process videos with 5 workers
+  python src/preprocessing/recap/process_recap_parallel.py --batch-range 101 200 --batch-prefix L26_V --workers 5
+  ```
+- Outputs saved to `data/processed/DAKE_output/captions/{video_id}.json`
 
 ---
 
-## 📄 License
-This project is licensed under the MIT License.
+## 4. Vector Generation & Database Ingestion
+
+### 4.1 Vector Extraction (Kaggle GPU)
+- Notebook: `notebooks/kaggle_generate_vectors.ipynb`
+- Extracts:
+  - **Visual vectors**: SigLIP-SO400M (`1152-d`)
+  - **Dense text vectors**: BGE-m3 (`1024-d`) over concatenated captions, transcripts & video metadata
+  - **Metadata DataFrame**: `metadata_df.pkl` (contains timestamps, frame indices, OCR strings)
+  - **BM25 Corpus**: `bm25_corpus.pkl`
+- Save downloaded outputs to `data/processed/kaggle_output_0002/`
+
+### 4.2 Database Ingestion (Milvus + Elasticsearch)
+- Ingestion Script: `src/data/ingest_to_db.py`
+- **Milvus Collection (`video_shots`)**:
+  - `visual_vector` (1152-d, HNSW index, Metric: IP)
+  - `text_vector` (1024-d, HNSW index, Metric: IP)
+- **Elasticsearch Index (`video_shots`)**:
+  - Standard text field: `text` (captions + transcript)
+  - Standard text field: `ocr_text` (extracted on-screen text)
+
+---
+
+## 5. Search Engine Architecture
+- Core Engine: `src/search/test_search.py`
+- **Modules**:
+  - `QueryDistiller` (`src/search/query_distiller.py`): Uses Gemini / OpenRouter API to split raw queries into visual subqueries, dense text query, English BM25 keywords, and Vietnamese OCR keywords.
+  - `Reciprocal Rank Fusion (RRF)`: Combines Visual dense hits (SigLIP in Milvus), Text dense hits (BGE-m3 in Milvus), and BM25 text/OCR hits (Elasticsearch).
+  - `Non-Maximum Suppression (NMS)`: Groups retrieved frame hits into contiguous video clips with window thresholding.
+
+---
+
+## 6. API Server & Web UI
+- Server: `api/api.py` (FastAPI)
+- UI: `api/static/`
+- Run server:
+  ```powershell
+  uvicorn api.api:app --host 0.0.0.0 --port 8000
+  ```
+
+---
+
+## 7. Benchmark Evaluation
+- Benchmark Evaluator: `src/eval/evaluate.py`
+- Ground Truth: `query.json`
+- Run evaluation:
+  ```powershell
+  # Baseline Search
+  python src/eval/evaluate.py --input query.json
+
+  # With LLM Query Distillation ON
+  python src/eval/evaluate.py --input query.json --use_distill
+  ```
+
+---
+
+## 8. Complete Execution Pipeline
+
+```powershell
+# 1. Start Vector DB & Search Engine
+docker-compose up -d
+
+# 2. Extract Keyframes & Audio
+python src/preprocessing/dake_keyframe_extraction.py
+python src/preprocessing/extract_audio.py
+python src/preprocessing/run_whisper_local.py
+python src/preprocessing/detect_shots_dake.py --min-gap-sec 0.6 --gap-multiplier 1.8 --max-shot-sec 15.0
+python src/preprocessing/extract_ocr_keyframes.py
+
+# 3. Generate ReCap Captions (MiMo v2.5)
+python src/preprocessing/recap/process_recap_parallel.py --base-dir data/processed --workers 5
+
+# 4. Ingest vectors & metadata into Milvus & Elasticsearch
+python src/data/ingest_to_db.py
+
+# 5. Launch FastAPI & Search Interface
+uvicorn api.api:app --host 0.0.0.0 --port 8000
+```

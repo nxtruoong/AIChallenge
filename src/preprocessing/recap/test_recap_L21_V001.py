@@ -15,11 +15,19 @@ def get_subtitle_for_shot(shot_start, shot_end, subtitles):
     return " ".join(shot_subs)
 
 def main():
-    video_id = "L21_V001"
-    base_dir = r"c:\Users\MODERN15\Downloads\AIHCM\data\processed"
+    import argparse
+    parser = argparse.ArgumentParser(description="Test ReCap on a single video")
+    parser.add_argument("--video-id", type=str, default="L21_V001", help="Video ID to test")
+    parser.add_argument("--base-dir", type=str, default=os.getenv("PROCESSED_DATA_DIR", "data/processed"), help="Processed data directory containing DAKE_output")
+    parser.add_argument("--media-dir", type=str, default=None, help="Media info directory")
+    args = parser.parse_args()
+
+    video_id = args.video_id
+    base_dir = args.base_dir
     
-    # 1. Load Media Info (optional, might not exist for L21 so we handle it)
-    media_info_path = os.path.join(base_dir, "kaggle_dataset_staging", "media_info", f"{video_id}.json")
+    # 1. Load Media Info (optional)
+    media_dir = args.media_dir or os.path.join(base_dir, "media_info")
+    media_info_path = os.path.join(media_dir, f"{video_id}.json")
     video_info = ""
     if os.path.exists(media_info_path):
         with open(media_info_path, 'r', encoding='utf-8') as f:
@@ -28,6 +36,9 @@ def main():
     
     # 2. Load Shot boundaries
     shots_path = os.path.join(base_dir, "DAKE_output", "shot_boundaries", f"{video_id}.json")
+    if not os.path.exists(shots_path):
+        print(f"Error: Shot boundaries not found at {shots_path}")
+        return
     with open(shots_path, 'r', encoding='utf-8') as f:
         shots = json.load(f)
         

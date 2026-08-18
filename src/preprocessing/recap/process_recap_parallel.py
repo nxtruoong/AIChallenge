@@ -95,19 +95,39 @@ def process_video(video_id, base_dir, raw_dir, out_dir):
     return True
 
 def main():
-    base_dir = r"c:\Users\MODERN15\Downloads\AIHCM\data\processed"
-    raw_dir = r"c:\Users\MODERN15\Downloads\AIHCM\data\raw\TrainingData"
-    out_dir = os.path.join(base_dir, "DAKE_output", "captions")
+    import argparse
+    parser = argparse.ArgumentParser(description="Parallel ReCap captioning with recurrent memory")
+    parser.add_argument("--base-dir", type=str, default=os.getenv("PROCESSED_DATA_DIR", "data/processed"), help="Processed data directory containing DAKE_output")
+    parser.add_argument("--raw-dir", type=str, default=os.getenv("RAW_DATA_DIR", "data/raw"), help="Raw data directory containing media-info")
+    parser.add_argument("--out-dir", type=str, default=None, help="Output directory for captions")
+    parser.add_argument("--video-ids", nargs="*", default=None, help="List of video IDs (e.g. L26_V245)")
+    parser.add_argument("--batch-range", nargs=2, type=int, default=None, help="Start and end index (e.g. 101 200 for L26_V101..L26_V200)")
+    parser.add_argument("--batch-prefix", type=str, default="L26_V", help="Video prefix (e.g. L26_V)")
+    parser.add_argument("--workers", type=int, default=5, help="Number of concurrent worker threads")
+    parser.add_argument("--model", type=str, default=None, help="LLM/LVLM model slug (default: xiaomi/mimo-v2.5)")
+    args = parser.parse_args()
+
+    base_dir = args.base_dir
+    raw_dir = args.raw_dir
+    out_dir = args.out_dir or os.path.join(base_dir, "DAKE_output", "captions")
     os.makedirs(out_dir, exist_ok=True)
     
-    missing_nums = [245]
-    video_ids = [f"L26_V{str(i).zfill(3)}" for i in missing_nums]
+    if args.video_ids:
+        video_ids = args.video_ids
+    elif args.batch_range:
+        video_ids = [f"{args.batch_prefix}{str(i).zfill(3)}" for i in range(args.batch_range[0], args.batch_range[1] + 1)]
+    else:
+        # Auto-discover from shot_boundaries directory
+        shots_dir = os.path.join(base_dir, "DAKE_output", "shot_boundaries")
+        if os.path.exists(shots_dir):
+            video_ids = [os.path.splitext(f)[0] for f in os.listdir(shots_dir) if f.endswith(".json")]
+        else:
+            video_ids = ["L26_V245"]
+            
+    print(f"Total videos to process: {len(video_ids)}")
+    print(f"Workers: {args.workers} | Model: {args.model or os.getenv('RECAP_MODEL', 'xiaomi/mimo-v2.5')}")
     
-    # Process 5 videos concurrently
-    max_workers = 5
-    print(f"Starting parallel processing with {max_workers} workers...")
-    
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as executor:
         futures = {executor.submit(process_video, vid, base_dir, raw_dir, out_dir): vid for vid in video_ids}
         
         for future in concurrent.futures.as_completed(futures):

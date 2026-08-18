@@ -5,6 +5,9 @@ import requests
 import time
 import io
 from PIL import Image
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def encode_image(image_path, max_size=(512, 512)):
     with Image.open(image_path) as img:
@@ -13,12 +16,17 @@ def encode_image(image_path, max_size=(512, 512)):
         img.save(buffer, format="JPEG", quality=85)
         return base64.b64encode(buffer.getvalue()).decode('utf-8')
 
-def call_recap_api(video_info, keyframes_paths, subtitle, previous_memory, template_name="prompt_template.txt"):
+def call_recap_api(video_info, keyframes_paths, subtitle, previous_memory, template_name="prompt_template.txt", model=None):
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY environment variable not set")
         
-    template_path = os.path.join(os.path.dirname(__file__), '..', 'api', template_name)
+    if model is None:
+        model = os.getenv("RECAP_MODEL", "xiaomi/mimo-v2.5")
+        
+    template_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'api', template_name)
+    if not os.path.exists(template_path):
+        template_path = os.path.join(os.getcwd(), 'api', template_name)
     with open(template_path, 'r', encoding='utf-8') as f:
         system_prompt = f.read()
         
@@ -36,7 +44,7 @@ def call_recap_api(video_info, keyframes_paths, subtitle, previous_memory, templ
         })
         
     payload = {
-        "model": "google/gemini-2.5-flash-lite",
+        "model": model,
         "messages": [
             {
                 "role": "system",
