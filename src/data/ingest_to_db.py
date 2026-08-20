@@ -61,6 +61,9 @@ def setup_elasticsearch():
             "properties": {
                 "id": {"type": "keyword"},
                 "video_name": {"type": "keyword"},
+                "video_title": {"type": "text", "analyzer": "standard"},
+                "video_description": {"type": "text", "analyzer": "standard"},
+                "video_keywords": {"type": "text", "analyzer": "standard"},
                 "text": {"type": "text", "analyzer": "standard"},
                 "ocr_text": {"type": "text", "analyzer": "standard"},
                 "frame_idx": {"type": "integer"},
@@ -115,6 +118,9 @@ def main():
     frame_idxs = df['frame_idx'].tolist()
     pts_times = df['pts_time'].tolist()
     ocr_texts = df['ocr_text'].tolist() if 'ocr_text' in df.columns else [""] * len(df)
+    video_titles = df['video_title'].tolist() if 'video_title' in df.columns else [""] * len(df)
+    video_descriptions = df['video_description'].tolist() if 'video_description' in df.columns else [""] * len(df)
+    video_keywords = df['video_keywords'].tolist() if 'video_keywords' in df.columns else [""] * len(df)
     
     print("Inserting into Milvus...")
     batch_size = 1000
@@ -149,6 +155,9 @@ def main():
             "_source": {
                 "id": ids[i],
                 "video_name": video_names[i],
+                "video_title": str(video_titles[i]) if video_titles[i] else "",
+                "video_description": str(video_descriptions[i]) if video_descriptions[i] else "",
+                "video_keywords": str(video_keywords[i]) if video_keywords[i] else "",
                 "text": doc_text,
                 "ocr_text": ocr_val,
                 "frame_idx": frame_idxs[i],
