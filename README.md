@@ -220,3 +220,26 @@ python src/data/ingest_to_db.py
 # 5. Launch FastAPI & Search Interface
 uvicorn api.api:app --host 0.0.0.0 --port 8000
 ```
+
+---
+
+## 9. AIC 2026 Preliminary Round Guidelines & Scoring
+
+*Source: `Thong tin vong So tuyen AIC2026.pdf`*
+
+### 1. Types of Queries
+1. **Textual KIS (Known Item Search)**: Teams must pinpoint an exact event based on a natural language description.
+   - **Submission Format**: `video_id` and specific `frame_id`.
+2. **Q&A (Question & Answer)**: Teams must locate a relevant moment from a description and answer a specific question about it.
+   - **Submission Format**: `video_id`, `frame_id`, and the specific `answer_text`.
+3. **TRAKE (Temporal Retrieval and Alignment of Key Events)**: A complex two-stage task requiring teams to retrieve a specific video from a large library and precisely align "semantic keyframes" for a sequence of events (addressed via TOMS temporal sequence query alignment).
+
+### 2. Evaluation and Scoring Methods
+- **Submission Limits**: Up to 100 candidate answers per query.
+- **R-Score (Correlation Score)**: Measures accuracy on a scale of $[0, 1]$.
+  - $1.0$ = perfectly accurate match.
+  - Partial scores awarded depending on query type.
+  - **Submitting the wrong video immediately results in an R-Score of 0**.
+- **Final Score**: Calculated by averaging the highest R-Scores achieved at five different Top-$k$ ranking thresholds:
+  $$\text{Final Score} = \frac{1}{5} \sum_{k \in \{1, 5, 20, 50, 100\}} \max_{r \le k} \text{R-Score}(r)$$
+  This scoring system rewards ranking the most accurate answers at the top of the submission list.
